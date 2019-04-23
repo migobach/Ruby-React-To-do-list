@@ -1,0 +1,25 @@
+{
+  "name": "rr-todo",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "cd client && npm install && npm run build && cd ..",
+    "unleash": "cop -a client/build/. public",
+    "deploy": "npm run build && npm run unleash && echo 'Client Built!'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/migobach/Ruby-React-To-do-list.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/migobach/Ruby-React-To-do-list/issues"
+  },
+  "homepage": "https://github.com/migobach/Ruby-React-To-do-list#readme"
+}

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 
-
 class App extends Component {
   state = { todos: [] }
-
+  
   componentDidMount() {
     fetch('/api/items')
       .then( res => res.json() )
@@ -13,40 +12,47 @@ class App extends Component {
   }
 
   addItem = (name, priority) => {
-    const item = { name, priority }
+    const todo = { name, priority }
     fetch('/api/items', {
-      method: 'POST', 
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json', 
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(item)
+      body: JSON.stringify(todo)
     }).then( res => res.json() )
       .then( todo => {
-        const { todos } = this.state
+        const { todos } = this.state;
         this.setState({ todos: [...todos, todo] })
       })
   }
 
   updateItem = (id) => {
-    const todos = this.state.todos.map( t => {
-      if (t.id === id)
-        return {...t, complete: !t.complete}
-      return t 
-    })
+    fetch(`/api/items/${id}`, { method: 'PUT' })
+      .then( res => res.json() )
+      .then( item => {
+        const todos = this.state.todos.map( t => {
+          if (t.id === id)
+            return item
+          return t
+        })
 
-    this.setState({ todos })
+        this.setState({ todos })
+      })
   }
 
   deleteItem = (id) => {
-    const { todos } = this.state
-    this.setState({ todos: todos.filter( t => t.id !== id ) })
+    fetch(`/api/items/${id}`, { method: 'DELETE' })
+      .then( () => {
+        const { todos } = this.state;
+        this.setState({ todos: todos.filter( t => t.id !== id ) })
+      })
   }
-
+  
   render() {
     return (
       <div className="container">
-        <TodoForm addItem={this.addItem} />
+        <TodoForm addItem={this.addItem}/>
         <TodoList 
           updateItem={this.updateItem}
           deleteItem={this.deleteItem}

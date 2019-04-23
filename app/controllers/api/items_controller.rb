@@ -2,7 +2,7 @@ class Api::ItemsController < Api::ApiController
   before_action :set_item, only: [:update, :destroy]
   
   def index
-    render json: Item.all 
+    render json: Item.all.order(:created_at)
   end
 
   def create
